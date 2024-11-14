@@ -98,3 +98,13 @@ Example Workflow for Telegram Integration
 
     Receive Responses via Telegram:
         Alternatively, for a pure C setup, use Telegram’s getUpdates endpoint via HTTP requests to poll for messages from the bot, then execute these commands in your C agent.
+
+
+
+## Change in plan
+
+I will use python. To create the server with a .exe I can use wine, but dlls need to be included in the file:
+
+wine C:/Python38/Scripts/pyinstaller.exe --onefile --add-binary "C:/Python38/python38.dll;." --log-level=DEBUG agent.py
+
+The filw will be in the dist/ folder
