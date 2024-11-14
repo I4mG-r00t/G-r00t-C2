@@ -58,11 +58,8 @@ agent.py <SERVER_IP> <SERVER_PORT>
 
 ## To do list:
 
-**Helper**
-https://chatgpt.com/share/6733b8ee-d4ac-8000-8573-da71ae7c6e1d
 
-
-## Step 3: Integrate pinggy and Test Encrypted Communication
+## Integrate pinggy and Test Encrypted Communication
 
     Expose C2 Server with pinggy:
         Use pinggy to expose your C2 server with a public IP and port.
@@ -72,7 +69,7 @@ https://chatgpt.com/share/6733b8ee-d4ac-8000-8573-da71ae7c6e1d
         Test the encryption and decryption functions separately to confirm they work correctly.
         Simulate command exchanges, ensuring that commands are encrypted by the server, decrypted by the agent, and that responses follow the same path securely.
 
-## Step 4: Implement Telegram as an Additional Channel
+## Implement Telegram as an Additional Channel
 
 Since Telegram’s API is JSON-based, integrating it with a C agent is more complex. You could either:
 
