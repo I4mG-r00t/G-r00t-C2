@@ -1,1 +1,0 @@
-# Installation and setup instructions

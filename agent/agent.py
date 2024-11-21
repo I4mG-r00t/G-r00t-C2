@@ -7,8 +7,8 @@ from cryptography.hazmat.backends import default_backend
 from base64 import b64encode, b64decode
 
 # Define your AES key and IV
-AES_KEY = b'abcd1234'  # Replace with a secure key
-AES_IV = b'adcd1234' # Replace with a secure IV
+AES_KEY = b'\x9feB%\xa3:!\xf2,\xe6\xbf\xb1V\xcb\xed\xbe\xa2p\xf1\x07\x89S%\xa7\x9d\xd4\x1fb\xa7\xe2\xacj'  # Replace with a secure key
+AES_IV = b'3\xfd\xd4\x96\x9b\xec6\x8f\xc0\xad!\xa3\xc5d\x0bC' # Replace with a secure IV
 
 def encrypt_message(message):
     cipher = Cipher(algorithms.AES(AES_KEY), modes.CFB(AES_IV), backend=default_backend())
