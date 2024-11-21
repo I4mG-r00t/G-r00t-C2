@@ -1,5 +1,7 @@
 # G-r00t C2 project
 
+This is a work in progress project. The goal is to learn more about C2 communications infrastructure.
+
 ## Disclaimer
 
 This Command and Control (C2) tool is developed solely for educational and research purposes. It is intended to help users understand the principles of C2 communication, cybersecurity testing, and network security in a controlled and lawful environment.
@@ -59,32 +61,7 @@ agent.py <SERVER_IP> <SERVER_PORT>
 ## To do list:
 
 
-## Integrate pinggy and Test Encrypted Communication
-
-    Expose C2 Server with pinggy:
-        Use pinggy to expose your C2 server with a public IP and port.
-        Configure the agent to communicate with the public IP and port from pinggy, and test the secure (AES-encrypted) communication between the agent and server.
-
-    Testing:
-        Test the encryption and decryption functions separately to confirm they work correctly.
-        Simulate command exchanges, ensuring that commands are encrypted by the server, decrypted by the agent, and that responses follow the same path securely.
-
-## Implement Telegram as an Additional Channel
-
-Since Telegram’s API is JSON-based, integrating it with a C agent is more complex. You could either:
-
-    Write a separate Python/C# process to handle Telegram communication, then interface this with the C-based agent.
-    Use a lightweight HTTP library in C (like libcurl) to directly communicate with Telegram’s API if you want a pure C solution, though it may involve considerable work parsing JSON responses.
-
-Example Workflow for Telegram Integration
-
-    Send Commands via Telegram:
-        Write a simple server process (in Python or any high-level language) that takes commands via a Telegram bot.
-        Have this server relay commands to your C2 server, which then relays encrypted commands to the C agent.
-
-    Receive Responses via Telegram:
-        Alternatively, for a pure C setup, use Telegram’s getUpdates endpoint via HTTP requests to poll for messages from the bot, then execute these commands in your C agent.
-
-## Extra functionalities
-
-Upload download files sunctionalities
+- Integrate pinggy
+- Implement Telegram as an Additional Channel
+- Extra functionalities
+  -   Upload download files sunctionalities
